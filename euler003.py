@@ -1,3 +1,5 @@
+import math
+
 def find_largest_prime_factor(maxInt):
 	x = 2
 	while x < maxInt / 2:
@@ -8,7 +10,8 @@ def find_largest_prime_factor(maxInt):
 
 def is_prime(number):
 	x = 2
-	while x < number / 2:
+	sqrt = math.sqrt(number)
+	while x <= sqrt:
 		if number % x == 0:
 			return False
 		x += 1

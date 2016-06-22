@@ -1,7 +1,14 @@
-def find_palindrome():
+def find_palindrome(digits):
 	maxPal = 0
-	for x in range(999,99, -1):
-		for y in range(x,99, -1):
+	maxNumber = ""
+	for x in range(0, digits):
+		maxNumber += "9"
+	minNumber = 0
+	if digits != 1:
+		minNumber = int(maxNumber[1:])
+
+	for x in range(int(maxNumber),minNumber, -1):
+		for y in range(x,minNumber, -1):
 			total = x * y
 			totalString = str(total)
 			palindrome = True
@@ -15,4 +22,5 @@ def find_palindrome():
 	return maxPal
 
 if __name__ == "__main__":
-	print find_palindrome()
+	digits = input("How many digits in the initial two numbers? ")
+	print find_palindrome(digits)
