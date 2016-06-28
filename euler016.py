@@ -1,5 +1,6 @@
 import math
 
+# easy enough
 def sum_digits(number):
 	string = str(number)
 	digits = len(string)
@@ -8,6 +9,7 @@ def sum_digits(number):
 		sum += int(string[x])
 	return sum
 
+# I should generalize this, probably
 if __name__ == "__main__":
 	test = pow(2,1000)
 	print sum_digits(test)
