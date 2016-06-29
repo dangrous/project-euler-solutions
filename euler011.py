@@ -1,35 +1,50 @@
-def target_factors_of_triangle(number):
-	factors = 0
-	test_number = 0
-	while factors < number:
-		test_number += 1
-		test_triangle = triangle(test_number)
-		# This IF makes it a little faster
-		# assuming that a non-mult of 2 would never have the most factors
-		# Is that true? I don't know.
-		if test_triangle % 2 == 0:
-			test_factors = count_factors(test_triangle)
-			if test_factors > factors:
-				factors = test_factors
-	return test_triangle
+# this one's a little more complicated, adding in File I/O
+import time
+# declaring the global variable
+grid = []
 
-def count_factors(number):
-	count = 0
-	max = number
-	x = 1
-	while x < max:
-		if number % x == 0:
-			count += 2
-			max = number / x
-			if max == x:
-				count -= 1
-		x += 1
-	return count
+def read_grid(filename):
+	with open(filename) as f:
+		lines = f.readlines()
+		for line in lines:
+			trav = 0
+			line_nums = []
+			while trav < len(line):
+				if line[trav].isdigit():
+					line_nums.append(int(line[trav:trav+2]))
+					trav += 2
+				else:
+					trav += 1
+			grid.append(line_nums)
 
-def triangle(number):
-	# found formula on mathisfun.com
-	return number * (number + 1) / 2
+def test_grid(grid):
+	start_time = time.time()
+	greatest = 0
+	# storing this and len(line) makes it slightly faster
+	len_grid = len(grid)
+	for grid_index, line in enumerate(grid):
+		len_line = len(line)
+		for index, number in enumerate(line):
+			if len_line >= index + 4:
+				hor_prod = line[index] * line[index + 1] * line[index + 2] * line[index + 3]
+				if hor_prod > greatest:
+					greatest = hor_prod
+			if len_grid >= grid_index + 4:
+				vert_prod = grid[grid_index][index] * grid[grid_index + 1][index] * grid[grid_index + 2][index] * grid[grid_index + 3][index]
+				if vert_prod > greatest:
+					greatest = vert_prod
+			if len_grid >= grid_index + 4 and len_line >= index + 4:
+				rdiag_prod = grid[grid_index][index] * grid[grid_index + 1][index + 1] * grid[grid_index + 2][index + 2] * grid[grid_index + 3][index + 3]
+				if rdiag_prod > greatest:
+					greatest = rdiag_prod
+			if len_grid >= grid_index + 4 and index >= 3:
+				ldiag_prod = grid[grid_index][index] * grid[grid_index + 1][index - 1] * grid[grid_index + 2][index - 2] * grid[grid_index + 3][index - 3]
+				if ldiag_prod > greatest:
+					greatest = ldiag_prod
+	print("--- %s seconds ---" % (time.time() - start_time))
+	return greatest
 
 if __name__ == "__main__":
-	test = input("How many factors are you looking for? ")
-	print target_factors_of_triangle(test)
+	filename = raw_input("Please enter the name of the grid file: ")
+	read_grid(filename)
+	print test_grid(grid)
